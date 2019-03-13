@@ -38,11 +38,27 @@ UPDATE customers SET postalCode = '11122' WHERE contactName = 'Bilbo Baggins'
 SELECT count(orderID), customerName
 FROM orders
 JOIN Customers ON orders.customerID=customers.customerID
-GROUP BY customerName
-ORDER BY count(orderID) desc;
+GROUP BY customerName;
 
 ## list customers names and the number of orders per customer. Sort the list by number of orders in descending order. _Ernst Handel_ should be at the top with 10 orders followed by _QUICK-Stop_, _Rattlesnake Canyon Grocery_ and _Wartian Herkku_ with 7 orders each.
 
+SELECT count(orderID), customerName
+FROM orders
+JOIN Customers ON orders.customerID=customers.customerID
+GROUP BY customerName
+ORDER BY count(orderID) desc;
+
 ## list orders grouped by customer's city showing number of orders per city. Returns 58 Records with _Aachen_ showing 2 orders and _Albuquerque_ showing 7 orders.
 
+SELECT count(orderID), city
+FROM orders
+JOIN Customers ON orders.customerID=customers.customerID
+GROUP BY city
+
 ## delete all users that have no orders. Should delete 17 (or 18 if you haven't deleted the record added) records.
+
+DELETE FROM customers WHERE customerName NOT IN (
+SELECT customerName
+FROM orders
+JOIN customers ON orders.customerID=customers.customerID
+GROUP BY customerName )
